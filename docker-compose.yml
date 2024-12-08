@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nextjs-app
+    restart: always
+    environment:
+      - NODE_ENV=production
+    expose:
+      - 3000
+    networks:
+      - app-network
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy-server
+    restart: always
+    environment:
+      - CADDY_ALWAYS_ON=true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:
