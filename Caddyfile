@@ -1,0 +1,8 @@
+mysyriaa.com {
+    reverse_proxy app:3000
+    tls contact@yazan-musahher.no
+}
+
+mysyriaa.com {
+    redir https://mysyriaa.com{uri}
+}
